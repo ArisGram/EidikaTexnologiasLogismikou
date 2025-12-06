@@ -22,7 +22,7 @@ class AuthController {
 
       const token = jwt.sign(
         { id: user.id, role: user.role },
-        process.env.JWT_SECRET || 'secret', // Βάλε ένα default ή στο .env
+        process.env.JWT_SECRET || 'secret',
         { expiresIn: "1h" }
       );
 

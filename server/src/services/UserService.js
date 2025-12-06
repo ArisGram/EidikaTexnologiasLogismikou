@@ -16,7 +16,7 @@ class UserService {
       fullName,
       email,
       password: hashed,
-      role: 'customer' // Default ρόλος
+      role: 'customer'
     });
   }
 

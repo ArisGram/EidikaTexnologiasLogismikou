@@ -26,7 +26,7 @@ app.get("/api/products", productController.getAll);
 const PORT = process.env.PORT || 5000;
 
 sequelize
-  .sync({ alter: true }) // Το alter: true θα φτιάξει τον πίνακα Products που λείπει
+  .sync({ alter: true })
   .then(() => {
     console.log("DB connected & Synced!");
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

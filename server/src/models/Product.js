@@ -7,7 +7,7 @@ const Product = sequelize.define("Product", {
     allowNull: false
   },
   price: {
-    type: DataTypes.DECIMAL(10, 2), // Τιμή με δεκαδικά
+    type: DataTypes.DECIMAL(10, 2), // Τιμή με σδεκαδικά
     allowNull: false
   },
   stock: {
