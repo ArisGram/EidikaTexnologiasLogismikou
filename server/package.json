@@ -2,6 +2,7 @@
   "name": "eshop",
   "version": "1.0.0",
   "description": "E-shop για αθλητικά είδη",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
@@ -14,15 +15,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/ArisGram/EidikaTexnologiasLogismikou/issues"
   },
   "homepage": "https://github.com/ArisGram/EidikaTexnologiasLogismikou#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.15.3",
     "sequelize": "^6.37.7"
   },
