@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 
 class UserService {
-  // Ζητάμε το User Model στον constructor
+  // DI: Ζητάμε το μοντέλο User κατά την κατασκευή
   constructor(userModel) {
     this.userModel = userModel;
   }
@@ -15,7 +15,8 @@ class UserService {
     return this.userModel.create({
       fullName,
       email,
-      password: hashed
+      password: hashed,
+      role: 'customer' // Default ρόλος
     });
   }
 
