@@ -1,91 +1,84 @@
 import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import axios from 'axios'
+import Login from './Login'
+import Register from './Register'
 import './App.css'
 
-function App() {
+function Home() {
   const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [formData, setFormData] = useState({
-    title: '',
-    price: '',
-    stock: ''
-  })
+  const [formData, setFormData] = useState({ title: '', price: '', stock: '' })
 
   useEffect(() => {
-    fetchProducts();
+    axios.get('http://localhost:5000/api/products').then(res => setProducts(res.data));
   }, [])
 
-  const fetchProducts = () => {
-    axios.get('http://localhost:5000/api/products')
-      .then(response => {
-        setProducts(response.data)
-        setLoading(false)
-      })
-      .catch(err => {
-        console.error("Error:", err)
-        setError("Δεν ήταν δυνατή η σύνδεση.")
-        setLoading(false)
-      })
-  }
-
-  const handleSubmit = (e) => {
+  const handleAdd = (e) => {
     e.preventDefault();
     axios.post('http://localhost:5000/api/products', formData)
-      .then(response => {
-        setProducts([...products, response.data]);
+      .then(res => {
+        setProducts([...products, res.data]);
         setFormData({ title: '', price: '', stock: '' });
-      })
-      .catch(err => alert('Σφάλμα κατά την προσθήκη: ' + err.message));
+      });
   }
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+    <div style={{ padding: '20px' }}>
       <h1>E-Shop Sports 🏀</h1>
-
-      { }
-      <div style={{ background: '#f4f4f4', padding: '20px', borderRadius: '8px', marginBottom: '30px' }}>
-        <h3>Προσθήκη Νέου Προϊόντος</h3>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-          <input 
-            type="text" 
-            placeholder="Όνομα Προϊόντος" 
-            value={formData.title}
-            onChange={(e) => setFormData({...formData, title: e.target.value})}
-            required 
-          />
-          <input 
-            type="number" 
-            placeholder="Τιμή" 
-            value={formData.price}
-            onChange={(e) => setFormData({...formData, price: e.target.value})}
-            required 
-          />
-          <input 
-            type="number" 
-            placeholder="Απόθεμα" 
-            value={formData.stock}
-            onChange={(e) => setFormData({...formData, stock: e.target.value})}
-            required 
-          />
-          <button type="submit" style={{ backgroundColor: 'green', color: 'white' }}>Προσθήκη</button>
+      
+      {/* Φόρμα Προσθήκης */}
+      <div style={{ background: '#f9f9f9', padding: '15px', marginBottom: '20px' }}>
+        <h3>Προσθήκη Προϊόντος</h3>
+        <form onSubmit={handleAdd} style={{ display: 'flex', gap: '10px' }}>
+          <input placeholder="Όνομα" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
+          <input placeholder="Τιμή" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} />
+          <button type="submit">Προσθήκη</button>
         </form>
       </div>
 
-      { }
-      {loading && <p>Φόρτωση...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px' }}>
-        {products.map(product => (
-          <div key={product.id} style={{ border: '1px solid #ddd', padding: '15px', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
-            <h3 style={{ margin: '0 0 10px 0' }}>{product.title}</h3>
-            <p>Τιμή: <strong style={{ color: '#2ecc71' }}>{product.price}€</strong></p>
-            <p>Στοκ: {product.stock}</p>
+      {/* Λίστα */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+        {products.map(p => (
+          <div key={p.id} style={{ border: '1px solid #ccc', padding: '10px' }}>
+            <h3>{p.title}</h3>
+            <p>{p.price}€</p>
           </div>
         ))}
       </div>
     </div>
+  )
+}
+
+
+function App() {
+  const isLoggedIn = !!localStorage.getItem('token');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/login';
+  }
+
+  return (
+    <Router>
+      <nav style={{ padding: '10px', background: '#333', color: 'white', marginBottom: '20px' }}>
+        <Link to="/" style={{ color: 'white', marginRight: '15px' }}>Home</Link>
+        {!isLoggedIn ? (
+          <>
+            <Link to="/login" style={{ color: 'white', marginRight: '15px' }}>Login</Link>
+            <Link to="/register" style={{ color: 'white' }}>Register</Link>
+          </>
+        ) : (
+          <button onClick={handleLogout} style={{ background: 'red', color: 'white', border: 'none' }}>Logout</button>
+        )}
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   )
 }
 
