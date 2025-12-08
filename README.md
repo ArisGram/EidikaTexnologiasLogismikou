@@ -1,13 +1,70 @@
-# EidikaTexnologiasLogismikou
+# EidikaTexnologiasLogismikou 
+
 ## Θέμα Εργασίας
-E-shop για αθλητικά είδη
+Full Stack E-shop για αθλητικά είδη με διαχείριση χρηστών, προϊόντων και παραγγελιών.
 
 ## Ομάδα Ανάπτυξης
 * **Μέλος 1:** Γραμματέας Αριστείδης (ΑΜ: 21390287)
 * **Μέλος 2:** Σωφρονάς Ιωάννης (ΑΜ: 21390215)
 
-## Τεχνολογίες (Stack)
-* **Frontend:** React
-* **Backend:** Node.js + Express
+## Τεχνολογίες (Tech Stack)
+
+Η εφαρμογή αναπτύχθηκε με χρήση αρχιτεκτονικής 3-επιπέδων (3-Tier Architecture):
+
+* **Frontend:** React.js, Vite, Axios, React Router, CSS3 (Responsive)
+* **Backend:** Node.js, Express.js, JWT (Authentication)
 * **Database:** MySQL
 * **ORM:** Sequelize
+* **Testing:** Jest, Supertest
+
+## Βασικές Λειτουργίες
+
+1.  **Authentication & Authorization:**
+    * Εγγραφή (Register) και Σύνδεση (Login) χρηστών.
+    * Κρυπτογράφηση κωδικών και χρήση JSON Web Tokens (JWT).
+    * Διαχωρισμός ρόλων σε **Customer** και **Admin**.
+
+2.  **Διαχείριση Προϊόντων (Admin Panel):**
+    * Οι διαχειριστές μπορούν να προσθέτουν και να επεξεργάζονται προϊόντα.
+    * Υποστήριξη εικόνας, περιγραφής, τιμής και αποθέματος (Stock).
+
+3.  **Καλάθι Αγορών:**
+    * Προσθήκη/Αφαίρεση προϊόντων.
+    * **Persistent Cart:** Το καλάθι αποθηκεύεται στη μνήμη (LocalStorage) και δεν χάνεται με το refresh.
+    * Έλεγχος αποθέματος (Stock) σε πραγματικό χρόνο.
+
+4.  **Αναζήτηση & UX:**
+    * Live Αναζήτηση προϊόντων (Search Bar).
+    * Σελίδα λεπτομερειών προϊόντος (Product Details Page) με δυναμικό routing.
+    * Responsive σχεδιασμός για προσαρμογή σε κινητά και tablets.
+
+5.  **Πληρωμές:**
+    * Προσομοίωση πληρωμής με έλεγχο εγκυρότητας κάρτας (Regex Validation).
+
+## Οδηγίες Εγκατάστασης (How to Run)
+
+Ακολουθήστε τα παρακάτω βήματα για να τρέξετε την εφαρμογή τοπικά:
+
+**1. Βάση Δεδομένων:**
+* Ανοίξτε το **XAMPP** και ξεκινήστε τα Apache & MySQL.
+* Πηγαίνετε στο `http://localhost/phpmyadmin`.
+* Δημιουργήστε μια νέα, κενή βάση δεδομένων με όνομα: `eshop`.
+
+**2. Backend (Server):**
+Ανοίξτε ένα τερματικό στον φάκελο server:
+cd server
+npm install
+npm start
+(Ο server θα τρέξει στην πόρτα 5000 και θα δημιουργήσει αυτόματα τους πίνακες στη βάση).
+
+**3. Frontend (Client):**
+Ανοίξτε ένα δεύτερο τερματικό στον φάκελο client:
+cd client
+npm install
+npm run dev
+(Η εφαρμογή θα είναι διαθέσιμη στο http://localhost:5173).
+
+**Testing**
+Για να τρέξετε τα Integration Tests του Backend:
+cd server
+npm test
