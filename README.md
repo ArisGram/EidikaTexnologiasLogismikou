@@ -51,11 +51,11 @@ Full Stack E-shop για αθλητικά είδη με διαχείριση χ�
 * Δημιουργήστε μια νέα, κενή βάση δεδομένων με όνομα: `eshop`.
 
 **2. Backend (Server):**
-*Ανοίξτε ένα τερματικό στον φάκελο server:
-*cd server*
-*npm install*
-*npm start*
-*(Ο server θα τρέξει στην πόρτα 5000 και θα δημιουργήσει αυτόματα τους πίνακες στη βάση).
+```Ανοίξτε ένα τερματικό στον φάκελο server:
+cd server*
+npm install*
+npm start*
+(Ο server θα τρέξει στην πόρτα 5000 και θα δημιουργήσει αυτόματα τους πίνακες στη βάση).
 
 **3. Frontend (Client):**
 Ανοίξτε ένα δεύτερο τερματικό στον φάκελο client:
@@ -67,4 +67,4 @@ npm run dev
 **Testing**
 Για να τρέξετε τα Integration Tests του Backend:
 cd server
-npm test
+npm test```
