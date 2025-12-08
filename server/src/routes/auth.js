@@ -4,10 +4,9 @@ import UserService from "../services/UserService.js";
 import AuthController from "../controllers/AuthController.js";
 
 const router = express.Router();
-const userService = new UserService(User); // Βάζει το Model στο Service
-const authController = new AuthController(userService); // Βάζει το Service στον Controller
+const userService = new UserService(User); 
+const authController = new AuthController(userService); 
 
-// Συνδέουμε τα routes
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 

@@ -22,11 +22,11 @@ class AuthController {
 
       const token = jwt.sign(
         { id: user.id, role: user.role },
-        process.env.JWT_SECRET || 'secret',
+        process.env.JWT_SECRET || 'secretkey',
         { expiresIn: "1h" }
       );
 
-      res.json({ token });
+      res.json({ token, role: user.role });
     } catch (err) {
       return res.status(401).json({ error: err.message });
     }

@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 
 class UserService {
-  // DI: Ζητάμε το μοντέλο User κατά την κατασκευή
   constructor(userModel) {
     this.userModel = userModel;
   }

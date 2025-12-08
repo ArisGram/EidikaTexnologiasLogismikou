@@ -20,6 +20,16 @@ class ProductController {
       res.status(500).json({ error: err.message });
     }
   };
+  
+  update = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updatedProduct = await this.productService.updateProduct(id, req.body);
+      res.json(updatedProduct);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  };
 }
 
 export default ProductController;
