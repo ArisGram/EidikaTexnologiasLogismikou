@@ -5,6 +5,7 @@ import Login from './Login'
 import Register from './Register'
 import Profile from './Profile'
 import './App.css'
+import ProductDetails from './ProductDetails';
 
 function Home() {
   const [products, setProducts] = useState([])
@@ -18,8 +19,9 @@ function Home() {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  const [formData, setFormData] = useState({ title: '', price: '', stock: '' })
+  const [formData, setFormData] = useState({ title: '', price: '', stock: '', description: '', imageUrl: '' })
   const [editingId, setEditingId] = useState(null);
+  
   const [showPayment, setShowPayment] = useState(false);
   const [cardDetails, setCardDetails] = useState({ number: '', cvv: '', expiry: '' });
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,13 +38,19 @@ function Home() {
   }
 
   const handleEditClick = (product) => {
-    setFormData({ title: product.title, price: product.price, stock: product.stock });
+    setFormData({ 
+      title: product.title, 
+      price: product.price, 
+      stock: product.stock,
+      description: product.description || '', 
+      imageUrl: product.imageUrl || '' 
+    });
     setEditingId(product.id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   const handleCancelEdit = () => {
-    setFormData({ title: '', price: '', stock: '' });
+    setFormData({ title: '', price: '', stock: '', description: '', imageUrl: '' });
     setEditingId(null);
   }
 
@@ -104,14 +112,12 @@ function Home() {
     }
   }
 
-  // --- ΦΙΛΤΡΑΡΙΣΜΑ ΠΡΟΪΟΝΤΩΝ ---
   const filteredProducts = products.filter(product =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="container">
-      {/* Payment Modal */}
       {showPayment && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -145,7 +151,6 @@ function Home() {
           <p>Βρες τον κορυφαίο εξοπλισμό για την προπόνησή σου.</p>
         </div>
 
-        {/* --- SEARCH BAR UI --- */}
         <div style={{marginBottom: '20px', display: 'flex', gap: '10px'}}>
           <input 
             type="text" 
@@ -159,7 +164,6 @@ function Home() {
             }}
           />
         </div>
-        {/* ------------------- */}
 
         {role === 'admin' && (
           <div className={`admin-panel ${editingId ? 'editing-mode' : ''}`}>
@@ -171,22 +175,49 @@ function Home() {
               <div className="form-group"><label>Όνομα</label><input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required /></div>
               <div className="form-group"><label>Τιμή (€)</label><input type="number" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} required /></div>
               <div className="form-group"><label>Απόθεμα</label><input type="number" value={formData.stock} onChange={e => setFormData({...formData, stock: e.target.value})} required /></div>
+              
+              <div className="form-group" style={{gridColumn: '1 / -1'}}>
+                <label>URL Εικόνας</label>
+                <input placeholder="https://..." value={formData.imageUrl} onChange={e=>setFormData({...formData, imageUrl:e.target.value})} />
+              </div>
+              <div className="form-group" style={{gridColumn: '1 / -1'}}>
+                <label>Περιγραφή</label>
+                <input placeholder="Περιγραφή προϊόντος..." value={formData.description} onChange={e=>setFormData({...formData, description:e.target.value})} />
+              </div>
+              
               <button type="submit" className={editingId ? 'btn-update' : 'btn-add'}>{editingId ? 'Ενημέρωση' : 'Προσθήκη'}</button>
             </form>
           </div>
         )}
 
         <div className="product-grid">
-          {/* ΠΡΟΣΟΧΗ: Εδώ χρησιμοποιούμε το filteredProducts */}
           {filteredProducts.length === 0 ? (
             <p style={{gridColumn: '1/-1', textAlign: 'center', color: '#888'}}>Δεν βρέθηκαν προϊόντα με αυτό το όνομα.</p>
           ) : (
             filteredProducts.map(p => (
               <div key={p.id} className="product-card">
-                <div className="card-header">
-                  <h3>{p.title}</h3>
-                  {role === 'admin' && <button onClick={() => handleEditClick(p)} className="btn-edit">✏️</button>}
+                <div className="card-header" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
+                   <Link to={`/product/${p.id}`} style={{textDecoration:'none', color:'inherit', flex: 1}}>
+                      {p.imageUrl && (
+                        <div style={{height: '150px', overflow: 'hidden', borderRadius: '8px', marginBottom: '10px'}}>
+                          <img src={p.imageUrl} alt={p.title} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                        </div>
+                      )}
+                      <h3>{p.title}</h3>
+                   </Link>
+                  
+                  {role === 'admin' && (
+                    <button 
+                        onClick={() => handleEditClick(p)} 
+                        className="btn-edit" 
+                        title="Επεξεργασία"
+                        style={{fontSize: '1.5rem', cursor: 'pointer', background: 'none', border: 'none'}}
+                    >
+                        ✏️
+                    </button>
+                  )}
                 </div>
+                
                 <div className="card-body">
                   <p className="price">{p.price}€</p>
                   <p className={`stock ${p.stock < 3 ? 'low-stock' : ''}`}>{p.stock > 0 ? `Απόθεμα: ${p.stock}` : 'Εξαντλήθηκε'}</p>
@@ -252,6 +283,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} /> 
+        <Route path="/product/:id" element={<ProductDetails />} />
       </Routes>
     </Router>
   )

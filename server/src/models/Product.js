@@ -14,6 +14,14 @@ const Product = sequelize.define("Product", {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  imageUrl: {
+    type: DataTypes.STRING, // Link φωτογραφίας
+    defaultValue: "https://via.placeholder.com/300" // Μια τυχαία εικόνα αν δεν βάλουμε εμείς
+  },
   category: {
     type: DataTypes.STRING
   }

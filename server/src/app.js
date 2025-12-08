@@ -25,7 +25,6 @@ OrderItem.belongsTo(Order);
 Product.hasMany(OrderItem);
 OrderItem.belongsTo(Product);
 
-
 const userService = new UserService(User);
 const authController = new AuthController(userService);
 const productService = new ProductService(Product);
@@ -40,7 +39,7 @@ app.get("/api/products", productController.getAll);
 app.put("/api/products/:id", productController.update);
 app.post("/api/orders", orderController.create);
 app.get("/api/orders", orderController.getMyOrders);
-
+app.get("/api/products/:id", productController.getOne);
 
 const PORT = process.env.PORT || 5000;
 

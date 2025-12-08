@@ -16,6 +16,10 @@ class ProductService {
     if (!product) throw new Error("Το προϊόν δεν βρέθηκε");
     return await product.update(data);
   }
+  
+  async getProductById(id) {
+    return await this.productModel.findByPk(id);
+  }
 }
 
  
